@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { Stomp } from '@stomp/stompjs';
+
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    Stomp
   ],
   providers: [],
   bootstrap: [AppComponent]

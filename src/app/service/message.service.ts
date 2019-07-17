@@ -7,10 +7,13 @@ import { Message } from '../model/message.model';
 })
 export class MessageService {
 
-  // end-point url
-  //baseURL: string = "http://localhost:8080/api";
+  url: string = "http://localhost:8090";
 
   constructor() { } 
+
+  connect() {
+    
+  }
 
   // gets all the todos as an observable
   sendMessage(message: Message) {

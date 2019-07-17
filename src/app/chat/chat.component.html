@@ -1,4 +1,4 @@
-<div class="chatbox">
+<!-- <div class="chatbox">
     <div class="msgbox" (click)="minimize()">
         <i class="far fa-minus-square" ></i>
         <span> Message</span>
@@ -15,40 +15,50 @@
         <div class="messageSending" #scrollMe>
 
             <form (ngSubmit)="sendMessage(message)" #messageForm="ngForm">
-                <!-- Message text box -->
+                
                 <div class="form-group">
                     <input type="text" class="form-control" id="content" required autocomplete="off"
                             [(ngModel)] = "message.content" name="content" #messagecontent = "ngModel">
                 </div>
-                <!-- Submit button -->
+                
                 <button type="submit" class="btn btn-success">Send</button>
             </form>
 
         </div>
     </div>
-</div>
+</div> -->
 
 
 
 <div class="chat-component">
 
-    <div class="chat-header" (click)="minimize()">
+    <div class="chat-header" (click)="minimize()" [hidden] = "!closed">
+        <h5>Chat</h5>
+    </div>
+
+    <div class="chat-header" [hidden] = "closed">
         <img src="https://img.icons8.com/flat_round/64/000000/circled-left-2.png
                 https://img.icons8.com/flat_round/64/000000/circled-left-2.png
-                " style="width: 25px;" (click)="openMessage()"/>
+                " style="width: 25px;"/>
         <h5>Chat</h5>
-        <button type="button" class="close" aria-label="Close" (click)="closeForm()">
+        <button type="button" class="close" aria-label="Close" (click)="minimize()">
             <span aria-hidden="true">&times;</span>
         </button>
 
     </div>
 
-    <div class="chat-body">
+    <div class="chat-body" [hidden]="closed">
         <div class="message-display" id="message-display">
             <ul class="allMessages">
                 <li *ngFor="let msg of messageList" class="singleMessage">
-                    <span>{{msg.content}}</span> <br>
-                    <span>{{msg.timeStamp}}</span>
+                    <div class="message-sent" style="width: 90%; float: right;">
+                        <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; margin-bottom: 5px;">
+                            {{msg.content}}
+                        </div>
+                        <span>
+                            {{msg.timeStamp | date:'short'}}
+                        </span>
+                    </div>
                 </li>
             </ul>
         </div>

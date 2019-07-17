@@ -21,8 +21,9 @@ export class ChatComponent implements OnInit {
   }
 
   messageList: Message[] =[];
-  closed = false;
+  closed = true;
   static idCount: number = 1000;
+
   manager: User = {id: "1", firstName: "hello", lastName: "world", type: "manager"};
   candidate: User = {id: "2", firstName: "goodbye", lastName: "earth", type: "candidate"};
   aChatRoom: ChatRoom = {id: "1", created: "2019-07-17T13:14:58+00:00", user1: this.manager, 
@@ -66,17 +67,5 @@ export class ChatComponent implements OnInit {
     }
 
   }
-
-  // OTHER CHAT
-
-  openForm() {
-    document.getElementById("myForm").style.display = "block";
-  }
- 
-  closeForm() {
-    document.getElementById("myForm").style.display = "none";
-  }
-
-
 
 }
