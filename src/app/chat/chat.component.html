@@ -28,23 +28,40 @@
     </div>
 </div>
 
-<button class="open-button btn btn-warning" (click)="openForm()">Chat</button>
 
-<div class="chat-popup" id="myForm">
-    <form action="" class="form-container">
+
+<div class="chat-component">
+
+    <div class="chat-header" (click)="minimize()">
+        <img src="https://img.icons8.com/flat_round/64/000000/circled-left-2.png
+                https://img.icons8.com/flat_round/64/000000/circled-left-2.png
+                " style="width: 25px;" (click)="openMessage()"/>
+        <h5>Chat</h5>
         <button type="button" class="close" aria-label="Close" (click)="closeForm()">
             <span aria-hidden="true">&times;</span>
         </button>
-        <!-- <i class="fa fa-user icon"></i> -->
-        <h5>Chat</h5>
-        <!-- <label for="msg"><b>Message</b></label> -->
 
-        <img src="https://img.icons8.com/flat_round/64/000000/circled-left-2.png
-        https://img.icons8.com/flat_round/64/000000/circled-left-2.png
-        " style="width: 25px; padding-bottom: 10px;" (click)="openMessage()"/>
-        <textarea placeholder="Type message.." name="msg" required></textarea>
+    </div>
 
-        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Send</button>
-        <!-- <button type="button" class="btn cancel" (click)="closeForm()">Close</button> -->
-    </form>
+    <div class="chat-body">
+        <div class="message-display" id="message-display">
+            <ul class="allMessages">
+                <li *ngFor="let msg of messageList" class="singleMessage">
+                    <span>{{msg.content}}</span> <br>
+                    <span>{{msg.timeStamp}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="message-form">
+            <form form (ngSubmit)="sendMessage(message)" #messageForm="ngForm">
+                
+                <textarea placeholder="Type message.." required id="content"
+                    [(ngModel)] = "message.content" name="content" #messagecontent = "ngModel"></textarea>
+                
+                <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Send</button>
+            </form>
+        </div>
+    </div>
+
 </div>
