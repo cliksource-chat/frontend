@@ -14,7 +14,7 @@ export class MessageService {
 
   url: string = "http://localhost:8090";
   socket: object = null;
-  client: object = null;
+  client: any = null;
 
   constructor(private http: HttpClient) {
     this.socket = SockJS(`${this.url}/chat`);
