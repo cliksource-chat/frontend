@@ -10,6 +10,7 @@ import { ChatRoom } from '../model/chatroom.model';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  public searchText: string;
 
   message = 
   {

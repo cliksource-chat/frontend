@@ -7,11 +7,13 @@ import { ChatComponent } from './chat/chat.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
+import { GrdFilterPipe } from './chat/grd-filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    GrdFilterPipe
   ],
   imports: [
     BrowserModule,

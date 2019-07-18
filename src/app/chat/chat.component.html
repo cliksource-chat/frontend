@@ -9,6 +9,7 @@
                 https://img.icons8.com/flat_round/64/000000/circled-left-2.png
                 " style="width: 25px;" (click)="changeView()" [hidden]="singleMessageView" />
         <h5>Chat</h5>
+        {{searchText}}
         <button type="button" class="close" aria-label="Close" (click)="minimize()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -47,21 +48,22 @@
 
         <div class="chat-list-body" [hidden]="!singleMessageView">
 
-            <div class="search">
-                <input type="text" class="search-bar"  placeholder="Search Employers" >
+            <!--<div class="search">
+                
                 <span class="input-group-addon">
                     <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </span>
-            </div>
-
-            <table class="table table-hover">
+                </span> 
+            </div> -->
+            <input [(ngModel)]="searchText" placeholder="Search Employers" class="advancedSearchTextbox">
+            <p></p>
+            <table>
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Candidate Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let chat of chatList ">
+                <tbody *ngFor ="let chat of chatList">
+                    <tr>
                         <td>
                             <div (click)="selectChat(chat)">
                                 <span class="candidate-name">{{chat.user2.firstName}} {{chat.user2.lastName}}</span><br>
