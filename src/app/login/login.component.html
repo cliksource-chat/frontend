@@ -1,0 +1,13 @@
+<app-banner></app-banner>
+
+<div class="container">
+    <form (ngSubmit)="loggingIn()" #loginForm="ngForm">
+        <div class="form-group">
+            <label for="userid">User ID</label>
+            <input type="text" class="form-control" placeholder="Enter User ID" 
+                [(ngModel)] = "userid" id="userid" name="userid" #loginuserid ="ngModel" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

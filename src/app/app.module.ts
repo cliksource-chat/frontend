@@ -8,6 +8,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {MessageService} from '../app/service/message.service';
+import { LoginComponent } from './login/login.component';
+import { BannerComponent } from './banner/banner.component';
+import { HomepageComponent } from './homepage/homepage.component';
 
 // import {Stomp} from '@stomp/stompjs';
 // import * as SockJS from 'sockjs-client';
@@ -22,7 +25,10 @@ import {MessageService} from '../app/service/message.service';
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    LoginComponent,
+    BannerComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,

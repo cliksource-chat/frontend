@@ -3,6 +3,7 @@ import { MessageService } from '../service/message.service';
 import { Message } from '../model/message.model';
 import { User } from '../model/user.model';
 import { ChatRoom } from '../model/chatroom.model';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-chat',
@@ -55,11 +56,15 @@ export class ChatComponent implements OnInit {
   currentChat: ChatRoom;
 
   mainChat = '5d2f747ed27e122d4cfb1941';
+
+  currentUser: string;
                       
 
-  constructor(private service: MessageService) { }
+  constructor(private messageService: MessageService, private loginService: LoginService) { }
 
   ngOnInit() {
+    this.currentUser = this.loginService.getCurrentUser();
+    console.log("Current User ID: " + this.currentUser);
   }
 
   minimize() {
@@ -73,9 +78,9 @@ export class ChatComponent implements OnInit {
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
-    this.service.connect();
+    this.messageService.connect();
     
-    this.service.getMessages()
+    this.messageService.getMessages()
     .subscribe(
       (data: Message[]) => {
         this.messageList = data;
@@ -108,7 +113,7 @@ export class ChatComponent implements OnInit {
       // TODO: figure out later
       
       // send the message to backend with service
-      this.service.sendMessage(newMessage);
+      this.messageService.sendMessage(newMessage);
 
     }
 
