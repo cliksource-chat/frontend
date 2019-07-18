@@ -21,11 +21,13 @@ import { HomepageComponent } from './homepage/homepage.component';
 
 
 
+import { GrdFilterPipe } from './chat/grd-filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
+    GrdFilterPipe,
     LoginComponent,
     BannerComponent,
     HomepageComponent

@@ -11,6 +11,7 @@ import { LoginService } from '../service/login.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  public searchText: string;
 
   message = 
   {

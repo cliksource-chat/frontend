@@ -9,6 +9,7 @@
                 https://img.icons8.com/flat_round/64/000000/circled-left-2.png
                 " style="width: 25px;" (click)="changeView()" [hidden]="singleMessageView" />
         <h5>Chat</h5>
+        {{searchText}}
         <button type="button" class="close" aria-label="Close" (click)="minimize()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -24,11 +25,11 @@
                         <div class="message-sent" style="width: 90%; float: right;">
                             <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; 
                                     margin-bottom: 5px;">
-                                {{msg.message}}
+                                {{msg.content}}
                             </div>
-                           <!-- <span>
+                            <span>
                                 {{msg.timeStamp | date:'short'}}
-                            </span> -->
+                            </span>
                         </div>
                     </li>
                 </ul>
@@ -38,7 +39,7 @@
                 <form form (ngSubmit)="sendMessage(message)" #messageForm="ngForm">
                     
                     <textarea placeholder="Type message.." required id="content"
-                        [(ngModel)] = "message.message" name="content" #messagecontent = "ngModel"></textarea>
+                        [(ngModel)] = "message.content" name="content" #messagecontent = "ngModel"></textarea>
                     
                     <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Send</button>
                 </form>
@@ -47,21 +48,22 @@
 
         <div class="chat-list-body" [hidden]="!singleMessageView">
 
-            <div class="search">
-                <input type="text" class="search-bar"  placeholder="Search Employers" >
+            <!--<div class="search">
+                
                 <span class="input-group-addon">
                     <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </span>
-            </div>
-
-            <table class="table table-hover">
+                </span> 
+            </div> -->
+            <input [(ngModel)]="searchText" placeholder="Search Employers" class="advancedSearchTextbox">
+            <p></p>
+            <table>
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Candidate Name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let chat of chatList ">
+                <tbody *ngFor ="let chat of chatList | grdFilter: searchText">
+                    <tr>
                         <td>
                             <div (click)="selectChat(chat)">
                                 <span class="candidate-name">{{chat.user2.firstName}} {{chat.user2.lastName}}</span><br>
