@@ -22,12 +22,27 @@ export class ChatComponent implements OnInit {
 
   messageList: Message[] =[];
   closed = true;
+  singleMessageView = true;
   static idCount: number = 1000;
 
-  manager: User = {id: "1", firstName: "hello", lastName: "world", type: "manager"};
-  candidate: User = {id: "2", firstName: "goodbye", lastName: "earth", type: "candidate"};
-  aChatRoom: ChatRoom = {id: "1", created: "2019-07-17T13:14:58+00:00", user1: this.manager, 
-                        user2: this.candidate};
+  manager: User = {id: "1", firstName: "Judy", lastName: "Pringle", type: "manager"};
+  candidate1: User = {id: "2", firstName: "Mark", lastName: "Vice", type: "candidate"};
+  candidate2: User = {id: "2", firstName: "Tiffany", lastName: "Gordon", type: "candidate"};
+  candidate3: User = {id: "2", firstName: "Mark", lastName: "Jacobs", type: "candidate"};
+  candidate4: User = {id: "2", firstName: "Nia", lastName: "Long", type: "candidate"};
+  candidate5: User = {id: "2", firstName: "Stacy", lastName: "Adams", type: "candidate"};
+  
+  chatList: ChatRoom[] = 
+  [
+    {id: "1", created: new Date, user1: this.manager, user2: this.candidate1},
+    {id: "2", created: new Date, user1: this.manager, user2: this.candidate2},
+    {id: "3", created: new Date, user1: this.manager, user2: this.candidate3},
+    {id: "4", created: new Date, user1: this.manager, user2: this.candidate4},
+    {id: "5", created: new Date, user1: this.manager, user2: this.candidate5}
+  ];
+
+  currentChat: ChatRoom;
+                      
 
   constructor(private service: MessageService) { }
 
@@ -38,10 +53,19 @@ export class ChatComponent implements OnInit {
     this.closed = !this.closed;
   }
 
+  changeView() {
+    this.singleMessageView = !this.singleMessageView;
+  }
+
+  selectChat(selectedChat: ChatRoom) {
+    this.currentChat = selectedChat;
+    this.changeView();
+  }
+
   sendMessage(messageForm: any) {
     let newMessage: any = {id: ChatComponent.idCount.toString(), sender: this.manager, 
                           content: messageForm.content.trim(), timeStamp: new Date(),
-                          chatRoom: this.aChatRoom};
+                          chatRoom: this.currentChat};
     
     // will send message if not empty
     if(newMessage.content == "" || newMessage == null) {
@@ -66,6 +90,14 @@ export class ChatComponent implements OnInit {
 
     }
 
+  }
+
+  openMessage() {
+    document.getElementById("myMessage").style.display = "block";
+  }
+  
+  closeMessage() {
+    document.getElementById("myMessage").style.display = "none";
   }
 
 }
