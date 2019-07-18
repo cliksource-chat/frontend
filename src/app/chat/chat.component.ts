@@ -18,7 +18,8 @@ export class ChatComponent implements OnInit {
     "id": "",
     "sender": "",
     "message": "",
-    "chatRoom": ""
+    "chatRoom": "",
+    "timeStamp": null
   }
 
   messageList: Message[] = null;
@@ -94,7 +95,7 @@ export class ChatComponent implements OnInit {
   sendMessage(messageForm: any) {
     let newMessage: any = {id: '0', sender: this.manager.id, 
                           message : messageForm.message.trim(),
-                          chatRoom: this.mainChat};
+                          chatRoom: this.mainChat, timeStamp: new Date()};
     
     // will send message if not empty
     if(newMessage.message == "" || newMessage.message == null) {
@@ -102,7 +103,8 @@ export class ChatComponent implements OnInit {
     }
     else {
       console.log("ID: " + newMessage.id + "\tFrom: " + newMessage.sender + " "
-       + "\tMessage: " + newMessage.message + "\tChatRoom ID: " + newMessage.chatRoom);
+       + "\tMessage: " + newMessage.message + "\tChatRoom ID: " + newMessage.chatRoom,
+       + "\tTime Stamp: " + newMessage.timeStamp);
 
       // clear message text box
       this.message.message = '';
