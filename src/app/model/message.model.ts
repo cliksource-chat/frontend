@@ -1,7 +1,6 @@
 export interface Message{
     id: string,
-    sender: object,
-    content: string,
-    timeStamp: Date,
-    chatRoom: object
+    sender: string,
+    message: string,
+    chatRoom: string
 }

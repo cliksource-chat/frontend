@@ -6,6 +6,17 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {MessageService} from '../app/service/message.service';
+
+// import {Stomp} from '@stomp/stompjs';
+// import * as SockJS from 'sockjs-client';
+
+// let socket: object = SockJS('http://localhost:8090/chat');
+
+//let stompClient: object = Stomp.client("http://localhost:8090/chat");
+
+
 
 
 @NgModule({
@@ -18,9 +29,10 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

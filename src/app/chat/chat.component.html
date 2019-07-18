@@ -24,11 +24,11 @@
                         <div class="message-sent" style="width: 90%; float: right;">
                             <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; 
                                     margin-bottom: 5px;">
-                                {{msg.content}}
+                                {{msg.message}}
                             </div>
-                            <span>
+                           <!-- <span>
                                 {{msg.timeStamp | date:'short'}}
-                            </span>
+                            </span> -->
                         </div>
                     </li>
                 </ul>
@@ -38,7 +38,7 @@
                 <form form (ngSubmit)="sendMessage(message)" #messageForm="ngForm">
                     
                     <textarea placeholder="Type message.." required id="content"
-                        [(ngModel)] = "message.content" name="content" #messagecontent = "ngModel"></textarea>
+                        [(ngModel)] = "message.message" name="content" #messagecontent = "ngModel"></textarea>
                     
                     <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Send</button>
                 </form>
