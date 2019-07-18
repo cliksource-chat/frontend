@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../service/message.service';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { Message } from '../model/message.model';
 import { User } from '../model/user.model';
 import { ChatRoom } from '../model/chatroom.model';
 
@@ -14,18 +14,29 @@ export class ChatComponent implements OnInit {
   message = 
   {
     "id": "",
-    "sender": null,
-    "content": "",
-    "timeStamp": null,
-    "chatRoom": null
+    "sender": "",
+    "message": "",
+    "chatRoom": ""
   }
 
-  messageList: Message[] =[];
+  messageList: Message[] = null;
   closed = true;
   singleMessageView = true;
-  static idCount: number = 1000;
+ 
 
-  manager: User = {id: "1", firstName: "Judy", lastName: "Pringle", type: "manager"};
+  candidate0: User =  {
+    id: "5d2f6765d27e1243a0cc329a",
+    firstName: "Tom",
+    lastName: "Riddle",
+    type: "Candidate"
+    };
+
+  manager: User = {
+    id: "5d2f6773d27e1243a0cc329b",
+    firstName: "Harry",
+    lastName: "Potter",
+    type: "Employer"
+    }
   candidate1: User = {id: "2", firstName: "Mark", lastName: "Vice", type: "candidate"};
   candidate2: User = {id: "2", firstName: "Tiffany", lastName: "Gordon", type: "candidate"};
   candidate3: User = {id: "2", firstName: "Mark", lastName: "Jacobs", type: "candidate"};
@@ -42,6 +53,8 @@ export class ChatComponent implements OnInit {
   ];
 
   currentChat: ChatRoom;
+
+  mainChat = '5d2f747ed27e122d4cfb1941';
                       
 
   constructor(private service: MessageService) { }
@@ -60,24 +73,33 @@ export class ChatComponent implements OnInit {
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
+    this.service.connect();
+    
+    this.service.getMessages()
+    .subscribe(
+      (data: Message[]) => {
+        this.messageList = data;
+      }, (error: any) => console.log(error), () => console.log('fetched!')
+    );
+
+    console.log(this.messageList);
   }
 
   sendMessage(messageForm: any) {
-    let newMessage: any = {id: ChatComponent.idCount.toString(), sender: this.manager, 
-                          content: messageForm.content.trim(), timeStamp: new Date(),
-                          chatRoom: this.currentChat};
+    let newMessage: any = {id: '0', sender: this.manager.id, 
+                          message : messageForm.message.trim(),
+                          chatRoom: this.mainChat};
     
     // will send message if not empty
-    if(newMessage.content == "" || newMessage == null) {
+    if(newMessage.message == "" || newMessage.message == null) {
       console.log("Empty message, not sent");
     }
     else {
-      console.log("ID: " + newMessage.id + "\tFrom: " + newMessage.sender.firstName + " " + 
-                  newMessage.sender.lastName + "\tMessage: " + newMessage.content + "\tTimeStamp: " + 
-                  newMessage.timeStamp + "\tChatRoom ID: " + newMessage.chatRoom.id);
+      console.log("ID: " + newMessage.id + "\tFrom: " + newMessage.sender + " "
+       + "\tMessage: " + newMessage.message + "\tChatRoom ID: " + newMessage.chatRoom);
 
       // clear message text box
-      this.message.content = '';
+      this.message.message = '';
 
       // display message on chat
       this.messageList.push(newMessage);
