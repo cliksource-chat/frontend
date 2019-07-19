@@ -23,12 +23,12 @@ export class MessageService {
     this.client.connect({}, ()=> {console.log('connected')}, (e) => {console.log(e)});
    } 
 
-  connect() {
+  connect(userId: string) {
     //pass in topic to this function
     //to be implemented
     this.client.send(`${this.url}/app/chat/${this.topic}/addUser`,
       {},
-      JSON.stringify({sender: "dev", type: 'JOIN'})
+      JSON.stringify({sender: userId, type: 'JOIN'})
     );
 
     this.subscription = this.client.subscribe('/channel/public', this.onSocketMessage )

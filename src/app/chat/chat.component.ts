@@ -96,7 +96,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
-    this.messageService.connect();
+    this.messageService.connect(this.currentUser);
     
     this.messageService.getMessages()
     .subscribe(
