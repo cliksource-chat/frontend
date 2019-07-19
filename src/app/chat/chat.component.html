@@ -22,7 +22,7 @@
             <div class="message-display" id="message-display">
 
                 <!-- this div controls the scroll feature by calling on the methods in the ts -->
-                <div #scroller class="feedWrapper" style="overflow: scroll; height: 100%;" id="scroller">
+                <div #scroller class="feedWrapper" style="overflow: scroll; height: 100%; overflow-x: hidden;" id="scroller">
                     <ul class="allMessages">
                         <li *ngFor="let msg of messageList" class="singleMessage">
 
