@@ -29,8 +29,10 @@
                             <!-- removed width from inline css already set to 100% 
                             now message wraps and stays inside blue alert box-->
                             <div class="message-sent" style="width:90%; float: right;">
-                                <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; 
-                                        margin-bottom: 5px; align-items: stretch;">
+                                <div [ngClass]="{'alert alert-primary': msg.sender.id === currentUser, 
+                                'alert alert-secondary': msg.sender.id !== currentUser}" style="max-width: 100%; margin-top: 5px; 
+                                        margin-bottom: 5px; align-items: stretch;"
+                                       >
                                     {{msg.message}}
                                 </div>
                                 <span>

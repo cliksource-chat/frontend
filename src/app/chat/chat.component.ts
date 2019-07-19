@@ -96,7 +96,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
-    this.messageService.connect();
+    this.messageService.connect(this.currentUser, this.listen(this.currentUser));
     
     this.messageService.getMessages()
     .subscribe(
@@ -105,11 +105,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }, (error: any) => console.log(error), () => console.log('fetched!')
     );
 
-    console.log(this.messageList);
+    //console.log(this.messageList);
+  }
+
+  listen(user: string){
+    let username: string = user;
+    return (message: Message) => {
+      if(message.sender !== username){
+        this.messageList.push(message);
+      }
+    }
+
+   
   }
 
   sendMessage(messageForm: any) {
-    let newMessage: any = {id: '0', sender: this.manager.id, 
+    let newMessage: any = {id: '0', sender: this.currentUser, 
                           message : messageForm.message.trim(),
                           chatRoom: this.mainChat, timeStamp: new Date()};
     
