@@ -11,28 +11,37 @@
         <h5>Chat</h5>
         {{searchText}}
         <button type="button" class="close" aria-label="Close" (click)="minimize()">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" style="float: right; padding-right: 10px; border: 
+                none;">&times;</span>
         </button>
-
     </div>
 
     <div class="chat-body" [hidden]="closed">
 
         <div class="chat-messaging-body" [hidden]="singleMessageView">
             <div class="message-display" id="message-display">
-                <ul class="allMessages">
-                    <li *ngFor="let msg of messageList" class="singleMessage">
-                        <div class="message-sent" style="width: 90%; float: right;">
-                            <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; 
-                                    margin-bottom: 5px;">
-                                {{msg.message}}
+
+                <!-- this div controls the scroll feature by calling on the methods in the ts -->
+                <div #scroller class="feedWrapper" style="overflow: scroll; height: 100%;" id="scroller">
+                    <ul class="allMessages">
+                        <li *ngFor="let msg of messageList" class="singleMessage">
+
+                            <!-- removed width from inline css already set to 100% 
+                            now message wraps and stays inside blue alert box-->
+                            <div class="message-sent" style="width:90%; float: right;">
+                                <div class="alert alert-primary" style="max-width: 100%; margin-top: 5px; 
+                                        margin-bottom: 5px; align-items: stretch;">
+                                    {{msg.message}}
+                                </div>
+                                <span>
+                                    {{msg.timeStamp | date:'short'}}
+                                </span>
                             </div>
-                            <span>
-                                {{msg.timeStamp | date:'short'}}
-                            </span>
-                        </div>
-                    </li>
-                </ul>
+
+                        </li>
+                    </ul>
+                </div>
+
             </div>
 
             <div class="message-form">
