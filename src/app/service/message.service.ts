@@ -23,7 +23,7 @@ export class MessageService {
     this.client.connect({}, ()=> {console.log('connected')}, (e) => {console.log(e)});
    } 
 
-  connect(userId: string) {
+  connect(userId: string, callback: any) {
     //pass in topic to this function
     //to be implemented
     this.client.send(`${this.url}/app/chat/${this.topic}/addUser`,
@@ -31,16 +31,22 @@ export class MessageService {
       JSON.stringify({sender: userId, type: 'JOIN'})
     );
 
-    this.subscription = this.client.subscribe('/channel/public', this.onSocketMessage )
+    this.subscription = this.client.subscribe('/channel/public', (payload) => this.onSocketMessage(payload, callback) )
     
-
     
   }
 
-  onSocketMessage(payload: any){
+  onSocketMessage(payload: any, cb: any){
     let message: Message = JSON.parse(payload.body);
-    console.log(message);
+    console.log(message)
+    if(message.message){
+      cb(message);
+    }
+    
+   
   }
+
+
 
   getConversations(){
 
