@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { Message } from '../model/message.model';
 import { User } from '../model/user.model';
@@ -10,7 +10,9 @@ import { LoginService } from '../service/login.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewChecked {
+  @ViewChild('scroller', {static: false}) private feedContainer: ElementRef;
+
   public searchText: string;
 
   message = 
@@ -62,11 +64,18 @@ export class ChatComponent implements OnInit {
   currentUser: string;
                       
 
-  constructor(private messageService: MessageService, private loginService: LoginService) { }
+  constructor(private messageService: MessageService, private loginService: LoginService) {
+    // sets scroll to bottom at creation
+    this.scrollToBottom();
+   }
 
   ngOnInit() {
     this.currentUser = this.loginService.getCurrentUser();
     console.log("Current User ID: " + this.currentUser);
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   minimize() {
@@ -75,6 +84,13 @@ export class ChatComponent implements OnInit {
 
   changeView() {
     this.singleMessageView = !this.singleMessageView;
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.feedContainer.nativeElement.scrollTop =
+        this.feedContainer.nativeElement.scrollHeight;
+    } catch(err) {} // keep try catch or else will get error when running code
   }
 
   selectChat(selectedChat: ChatRoom) {
@@ -111,9 +127,6 @@ export class ChatComponent implements OnInit {
 
       // display message on chat
       this.messageList.push(newMessage);
-
-      // scroll down after message sent
-      // TODO: figure out later
       
       // send the message to backend with service
       this.messageService.sendMessage(newMessage);

@@ -8,16 +8,20 @@
     /* height: 600px; */
     background-color: white;
     border: 3px solid rgb(238, 236, 236);
-
-    /* Fix these later */
     position: fixed;
     bottom:0;
     right: 15px;
 }
 
+.chat-button {
+  background-color: dodgerblue;
+  color: white;
+}
+
 /* chat header */
 .chat-header {
-    padding: 5px;
+  text-align: center;
+  padding-top: 10px;
 }
 /* chat text in header */
 .chat-header h5 {
@@ -28,6 +32,8 @@
 /* chat image icons in header */
 .chat-header img {
     width: 15%;
+    float: left;
+    padding-left: 5px;
 }
 
 /* chat body with chat messaging and display of all messages */
@@ -35,6 +41,7 @@
     width: 100%;
     height: 550px;
     padding: 15px;
+    overflow: auto;
 }
 
 .chat-messaging-body {
@@ -296,6 +303,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
+  height: auto;
 }
 .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
 .sent_msg {
