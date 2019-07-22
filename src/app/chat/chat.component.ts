@@ -140,7 +140,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.message.message = '';
 
       // display message on chat
-      this.messageList.push(newMessage);
+      this.messageList.push({...newMessage, sender: {id: newMessage.sender}});
       
       // send the message to backend with service
       this.messageService.sendMessage(newMessage);
