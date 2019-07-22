@@ -9,7 +9,6 @@
                 https://img.icons8.com/flat_round/64/000000/circled-left-2.png
                 " style="width: 25px;" (click)="changeView()" [hidden]="singleMessageView" />
         <h5>Chat</h5>
-        {{searchText}}
         <button type="button" class="close" aria-label="Close" (click)="minimize()">
             <span aria-hidden="true" style="float: right; padding-right: 10px; border: 
                 none;">&times;</span>
@@ -74,7 +73,7 @@
                         <th scope="col" *ngIf="!userIsEmployer">Employer</th>
                     </tr>
                 </thead>
-                <tbody *ngFor ="let chat of chatList | grdFilter: searchText">
+                <tbody *ngFor ="let chat of chatList | grdFilter: searchText:userIsEmployer">
                     <tr>
                         <td>
                             <div (click)="selectChat(chat)" class="single-chat">
