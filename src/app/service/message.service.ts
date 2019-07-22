@@ -47,8 +47,8 @@ export class MessageService {
   }
 
 
-
-  getConversations(){
+  // gets the chats of the user by their id
+  getChats(){
 
   }
 
