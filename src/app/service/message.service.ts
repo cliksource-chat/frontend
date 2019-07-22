@@ -6,6 +6,7 @@ import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ChatRoom } from '../model/chatroom.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,16 +47,21 @@ export class MessageService {
    
   }
 
-
   // gets the chats of the user by their id
-  getChats(){
-
+  getChats(userid: string): Observable<ChatRoom[]>{
+    return this.http.get<ChatRoom[]>(`${this.url}/api/chatrooms/userSpecific/${userid}`);
   }
 
-  getMessages(): Observable<Message[]>{
+  // get messages of chatroom by id
+  getChatMessages(chatRoomID: string): Observable<Message[]> {
+    return this.http.get<Message[]>(`${this.url}/api/messages/byRoomId/${chatRoomID}`);
+  }
+
+  // get messages of specific chatroom
+  getMessages(chatRoomID: string): Observable<Message[]>{
     //called when user clicks on a convo
     //replace id with topic (chat room id)
-    return this.http.get<Message[]>(`${this.url}/api/messages/byRoomId/5d2f747ed27e122d4cfb1941`);
+    return this.http.get<Message[]>(`${this.url}/api/messages/byRoomId/${chatRoomID}`);
 
   }
 

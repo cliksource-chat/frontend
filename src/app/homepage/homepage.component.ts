@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../service/login.service';
+import { User } from '../model/user.model';
 
 @Component({
   selector: 'app-homepage',
@@ -8,12 +9,12 @@ import { LoginService } from '../service/login.service';
 })
 export class HomepageComponent implements OnInit {
 
-  userid: string;
+  currentUser: User;
 
   constructor(private loginService: LoginService) { }
 
   ngOnInit() {
-    this.userid = this.loginService.getCurrentUser();
+    this.currentUser = this.loginService.getCurrentUser();
   }
 
 }
