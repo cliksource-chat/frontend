@@ -70,7 +70,8 @@
             <table class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">Candidate Name</th>
+                        <th scope="col" *ngIf="userIsEmployer">Candidate</th>
+                        <th scope="col" *ngIf="!userIsEmployer">Employer</th>
                     </tr>
                 </thead>
                 <tbody *ngFor ="let chat of chatList | grdFilter: searchText">
