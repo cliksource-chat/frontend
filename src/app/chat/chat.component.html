@@ -68,7 +68,7 @@
             </div> -->
             <input [(ngModel)]="searchText" placeholder="Search Employers" class="advancedSearchTextbox">
             <p></p>
-            <table>
+            <table class="table">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Candidate Name</th>
@@ -77,7 +77,8 @@
                 <tbody *ngFor ="let chat of chatList | grdFilter: searchText">
                     <tr>
                         <td>
-                            <div (click)="selectChat(chat)">
+                            <div (click)="selectChat(chat)" class="single-chat">
+                                <span style="float: left; padding-right: 20px; padding-bottom: 20px; color: lightblue;"><i class="fas fa-user fa-2x"></i></span>
                                 <span class="chat-user" *ngIf="userIsEmployer">{{chat.user2.firstname}} {{chat.user2.lastname}}</span>
                                 <span class="chat-user" *ngIf="!userIsEmployer">{{chat.user1.firstname}} {{chat.user1.lastname}}</span><br>
                                 <span class="chat-preview">This is the last message sent...</span>
