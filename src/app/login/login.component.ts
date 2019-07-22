@@ -22,31 +22,12 @@ export class LoginComponent implements OnInit {
     this.service.validUser(this.userid)
       .subscribe(
         (data: User) => {
-          this.service.setCurrentUser(data.id);
+          this.service.setCurrentUser(data);
           this.router.navigate([`/homepage`]);
         },
         (error: any) => console.log(error),
         () => console.log('fetched user')
       );
-
-    // if (!("error" in tempUser)) {
-    //   console.log(tempUser);
-    //   this.service.setCurrentUser(tempUser.id);
-    //   this.router.navigate([`/homepage`]);
-      
-
-    // }
-    // else {
-    //   console.log("Not a valid user");
-    // }
-
-
-    // for(let i = 0; i < this.usersList.length; i++) {
-    //   if(this.usersList[i] == this.userid) {
-    //     this.service.setCurrentUser(this.userid);
-    //     this.router.navigate([`/homepage`]);
-    //   }
-    // }
     
   }
 

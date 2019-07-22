@@ -3,8 +3,8 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid" id="welcomePage">
         <div class="container">
-            <h1 class="display-4">Welcome!</h1>
-            <p class="lead">Your User ID is <strong>{{userid}}</strong>. You can begin 
+            <h1 class="display-4">Welcome {{currentUser.firstname}} {{currentUser.lastname}}!</h1>
+            <p class="lead">Your User ID is <strong>{{currentUser.id}}</strong>. You can begin 
                 using the chat application.</p>
         </div>
     </div>

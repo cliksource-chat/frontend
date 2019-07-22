@@ -76,8 +76,9 @@
                     <tr>
                         <td>
                             <div (click)="selectChat(chat)">
-                                <span class="candidate-name">{{chat.user2.firstName}} {{chat.user2.lastName}}</span><br>
-                                <span class="chat-preview">Beginnning of last message sent...</span>
+                                <span class="chat-user" *ngIf="userIsEmployer">{{chat.user2.firstname}} {{chat.user2.lastname}}</span>
+                                <span class="chat-user" *ngIf="!userIsEmployer">{{chat.user1.firstname}} {{chat.user1.lastname}}</span><br>
+                                <span class="chat-preview">This is the last message sent...</span>
                             </div>
                         </td>
                         <!-- <td>{{chat.name}}</td> -->

@@ -8,17 +8,25 @@ import { User } from '../model/user.model';
 })
 export class LoginService {
 
-  static currentUser: string = "";
+  static currentUser: User;
   url: string = "http://localhost:8090";
 
   constructor(private http: HttpClient) { }
 
-  setCurrentUser(newUser: string) {
+  setCurrentUser(newUser: User) {
     LoginService.currentUser = newUser;
   }
 
-  getCurrentUser(): string {
+  getCurrentUser(): User {
     return LoginService.currentUser;
+  }
+
+  getCurrentUserID(): string {
+    return LoginService.currentUser.id;
+  }
+
+  getCurrentUserType(): string {
+    return LoginService.currentUser.type;
   }
 
   validUser(userid: string): Observable<User> {

@@ -27,50 +27,32 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   messageList: Message[] = null;
   closed = true;
   singleMessageView = true;
- 
 
-  candidate0: User =  {
-    id: "5d2f6765d27e1243a0cc329a",
-    firstName: "Tom",
-    lastName: "Riddle",
-    type: "Candidate"
-    };
-
-  manager: User = {
-    id: "5d2f6773d27e1243a0cc329b",
-    firstName: "Harry",
-    lastName: "Potter",
-    type: "Employer"
-    }
-  candidate1: User = {id: "2", firstName: "Mark", lastName: "Vice", type: "candidate"};
-  candidate2: User = {id: "2", firstName: "Tiffany", lastName: "Gordon", type: "candidate"};
-  candidate3: User = {id: "2", firstName: "Mark", lastName: "Jacobs", type: "candidate"};
-  candidate4: User = {id: "2", firstName: "Nia", lastName: "Long", type: "candidate"};
-  candidate5: User = {id: "2", firstName: "Stacy", lastName: "Adams", type: "candidate"};
-  
-  chatList: ChatRoom[] = 
-  [
-    {id: "1", created: new Date, user1: this.manager, user2: this.candidate1},
-    {id: "2", created: new Date, user1: this.manager, user2: this.candidate2},
-    {id: "3", created: new Date, user1: this.manager, user2: this.candidate3},
-    {id: "4", created: new Date, user1: this.manager, user2: this.candidate4},
-    {id: "5", created: new Date, user1: this.manager, user2: this.candidate5}
-  ];
+  chatList: ChatRoom[];
 
   currentChat: ChatRoom;
 
-  mainChat = '5d2f747ed27e122d4cfb1941';
-
   currentUser: string;
+
+  userIsEmployer: boolean;
                       
 
   constructor(private messageService: MessageService, private loginService: LoginService) {
     // sets scroll to bottom at creation
+    this.getAllChats();
+
+    if(loginService.getCurrentUserType().toLowerCase() == "employer") {
+      this.userIsEmployer = true;
+    } 
+    else { 
+      this.userIsEmployer = false; 
+    }
+
     this.scrollToBottom();
    }
 
   ngOnInit() {
-    this.currentUser = this.loginService.getCurrentUser();
+    this.currentUser = this.loginService.getCurrentUserID();
     console.log("Current User ID: " + this.currentUser);
   }
 
@@ -93,15 +75,36 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     } catch(err) {} // keep try catch or else will get error when running code
   }
 
+  getAllChats() {
+    this.messageService.getChats(this.loginService.getCurrentUserID())
+      .subscribe (
+        (data: ChatRoom[]) => {
+          this.chatList = data;
+        },
+        (error: any) => console.log(error),
+        () => console.log('fetched chat list for user')
+      );
+  }
+
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
     this.messageService.connect(this.currentUser, this.listen(this.currentUser));
     
-    this.messageService.getMessages()
+    this.messageService.getMessages(this.currentChat.id)
     .subscribe(
       (data: Message[]) => {
-        this.messageList = data;
+        // empty message array
+        // try {
+        //   this.messageList.length = 0;
+        // } catch (error) { }
+        // grab messages for this chat
+        if(data == null) {
+          this.messageList = [];
+        }
+        else {
+          this.messageList = data;
+        }
       }, (error: any) => console.log(error), () => console.log('fetched!')
     );
 
@@ -122,7 +125,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   sendMessage(messageForm: any) {
     let newMessage: any = {id: '0', sender: this.currentUser, 
                           message : messageForm.message.trim(),
-                          chatRoom: this.mainChat, timeStamp: new Date()};
+                          chatRoom: this.currentChat.id, timeStamp: new Date()};
     
     // will send message if not empty
     if(newMessage.message == "" || newMessage.message == null) {
