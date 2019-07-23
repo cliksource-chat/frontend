@@ -30,6 +30,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   chatList: ChatRoom[];
 
+  notifs:any = {};
+
   currentChat: ChatRoom;
 
   currentUser: string;
@@ -39,8 +41,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   constructor(private messageService: MessageService, private loginService: LoginService) {
     // sets scroll to bottom at creation
-    this.getAllChats();
-
+    this.getAllChats(); 
+    
     if(loginService.getCurrentUserType().toLowerCase() == "employer") {
       this.userIsEmployer = true;
     } 
@@ -82,14 +84,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           this.chatList = data;
         },
         (error: any) => console.log(error),
-        () => console.log('fetched chat list for user')
+        async () => {
+          //establish connection to all chats here
+          //force program to wait 1 second to allow sockets to finish connection process
+          await new Promise(resolve => setTimeout(resolve, 1000));
+         
+          this.chatList.forEach(room => this.messageService.connect(this.currentUser, room.id, this.listen(this.currentUser)))
+        }
       );
   }
 
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
     this.changeView();
-    this.messageService.connect(this.currentUser, this.listen(this.currentUser));
+
+    //clear notifications for this channel (if any)
+    this.notifs[selectedChat.id] = 0;
     
     this.messageService.getMessages(this.currentChat.id)
     .subscribe(
@@ -107,19 +117,32 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         }
       }, (error: any) => console.log(error), () => console.log('fetched!')
     );
-
-    //console.log(this.messageList);
   }
 
   listen(user: string){
     let username: string = user;
     return (message: Message) => {
       if(message.sender !== username){
-        this.messageList.push(message);
+        
+        this.addNotification(message);
+        if(this.closed == false && this.currentChat && this.currentChat.id == message.chatRoom){
+          //chat window is open, push messages onto list of current messages
+          this.messageList.push(message);          
+        }
+        
       }
     }
+  }
 
-   
+  addNotification(message: Message){
+    if(this.singleMessageView == false){
+      return;
+    }
+    if(this.notifs[message.chatRoom]){
+      this.notifs[message.chatRoom]++;
+    } else {
+      this.notifs[message.chatRoom] = 1;
+    }
   }
 
   sendMessage(messageForm: any) {

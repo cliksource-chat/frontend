@@ -70,7 +70,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col" *ngIf="userIsEmployer">Candidate</th>
-                        <th scope="col" *ngIf="!userIsEmployer">Employer</th>
+                        <th scope="col" *ngIf="!userIsEmployer">Employer</th>     
                     </tr>
                 </thead>
                 <tbody *ngFor ="let chat of chatList | grdFilter: searchText:userIsEmployer">
@@ -83,7 +83,11 @@
                                 <span class="chat-preview">This is the last message sent...</span>
                             </div>
                         </td>
-                        <!-- <td>{{chat.name}}</td> -->
+                        <div *ngIf="notifs[chat.id]" >
+                            <td>
+                                {{notifs[chat.id]}}                               
+                            </td>
+                        </div>
                     </tr>
                 </tbody>
             </table>
