@@ -21,7 +21,7 @@
             <div class="message-display" id="message-display">
 
                 <!-- this div controls the scroll feature by calling on the methods in the ts -->
-                <div #scroller class="feedWrapper" style="overflow: scroll; height: 100%; overflow-x: hidden;" id="scroller">
+                <div #scroller class="feedWrapper" style="overflow: auto; height: 100%; overflow-x: hidden;" id="scroller">
                     <ul class="allMessages">
                         <li *ngFor="let msg of messageList" class="singleMessage">
 
@@ -58,12 +58,6 @@
 
         <div class="chat-list-body" [hidden]="!singleMessageView">
 
-            <!--<div class="search">
-                
-                <span class="input-group-addon">
-                    <button type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </span> 
-            </div> -->
             <input [(ngModel)]="searchText" placeholder="Search Employers" class="advancedSearchTextbox">
             <p></p>
             <table class="table">

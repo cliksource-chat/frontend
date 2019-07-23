@@ -25,11 +25,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
   messageList: Message[] = null;
+  
   closed = true;
   singleMessageView = true;
 
   chatList: ChatRoom[];
-
   currentChat: ChatRoom;
 
   currentUser: string;
@@ -38,9 +38,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                       
 
   constructor(private messageService: MessageService, private loginService: LoginService) {
-    // sets scroll to bottom at creation
+    // gets chats for user
     this.getAllChats();
 
+    // checks if user employer or not
     if(loginService.getCurrentUserType().toLowerCase() == "employer") {
       this.userIsEmployer = true;
     } 
@@ -48,6 +49,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.userIsEmployer = false; 
     }
 
+    // scrolls chat to bottom on start
     this.scrollToBottom();
    }
 
@@ -94,11 +96,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.messageService.getMessages(this.currentChat.id)
     .subscribe(
       (data: Message[]) => {
-        // empty message array
-        // try {
-        //   this.messageList.length = 0;
-        // } catch (error) { }
-        // grab messages for this chat
         if(data == null) {
           this.messageList = [];
         }
@@ -108,7 +105,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       }, (error: any) => console.log(error), () => console.log('fetched!')
     );
 
-    //console.log(this.messageList);
   }
 
   listen(user: string){

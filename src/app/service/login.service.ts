@@ -33,4 +33,8 @@ export class LoginService {
     console.log("Getting user with id: " + userid);
     return this.http.get<User>(`${this.url}/api/users/${userid}`);
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.url}/api/users`);
+  }
 }

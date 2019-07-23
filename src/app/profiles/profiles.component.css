@@ -1,0 +1,12 @@
+.container {
+    text-align: center;
+}
+.profiles-wrap {
+    margin: 0 auto;
+}
+.profile-container {
+    display: inline-block;
+    margin: auto;
+    padding: 10px;
+    vertical-align: middle;
+}

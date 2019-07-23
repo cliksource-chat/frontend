@@ -10,11 +10,17 @@ import { User } from '../model/user.model';
 export class HomepageComponent implements OnInit {
 
   currentUser: User;
+  displayProfiles: boolean;
 
   constructor(private loginService: LoginService) { }
 
   ngOnInit() {
     this.currentUser = this.loginService.getCurrentUser();
+
+    if(this.currentUser.type.toLowerCase() == "employer")
+      this.displayProfiles = false;
+    else
+      this.displayProfiles = true;
   }
 
 }

@@ -22,6 +22,8 @@ import { HomepageComponent } from './homepage/homepage.component';
 
 
 import { GrdFilterPipe } from './chat/grd-filter.pipe';
+import { ProfilesComponent } from './profiles/profiles.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { GrdFilterPipe } from './chat/grd-filter.pipe';
     GrdFilterPipe,
     LoginComponent,
     BannerComponent,
-    HomepageComponent
+    HomepageComponent,
+    ProfilesComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

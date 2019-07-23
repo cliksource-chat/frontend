@@ -18,6 +18,7 @@ export class MessageService {
   client: any = null;
   topic: string = "public";
   subscription: any = {};
+  
   constructor(private http: HttpClient) {
     this.socket = SockJS(`${this.url}/chat`);
     this.client = Stomp.over(this.socket);
@@ -64,8 +65,6 @@ export class MessageService {
     return this.http.get<Message[]>(`${this.url}/api/messages/byRoomId/${chatRoomID}`);
 
   }
-
-
 
   // gets all the todos as an observable
   sendMessage(newMessage: Message) {
