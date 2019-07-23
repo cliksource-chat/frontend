@@ -16,31 +16,30 @@ export class MessageService {
   url: string = "http://localhost:8090";
   socket: object = null;
   client: any = null;
-  topic: string = "public";
+
   subscription: any = {};
   
   constructor(private http: HttpClient) {
     this.socket = SockJS(`${this.url}/chat`);
     this.client = Stomp.over(this.socket);
-    this.client.connect({}, ()=> {console.log('connected')}, (e) => {console.log(e)});
+    this.client.connect({}, ()=> {console.log('finished web socket connection')}, (e) => {console.log(e)});
    } 
 
-  connect(userId: string, callback: any) {
+  connect(userId: string, chatId: string, callback: any) {
     //pass in topic to this function
     //to be implemented
-    this.client.send(`${this.url}/app/chat/${this.topic}/addUser`,
+    this.client.send(`${this.url}/app/chat/${chatId}/addUser`,
       {},
       JSON.stringify({sender: userId, type: 'JOIN'})
     );
 
-    this.subscription = this.client.subscribe('/channel/public', (payload) => this.onSocketMessage(payload, callback) )
+    this.subscription = this.client.subscribe(`/channel/${chatId}`, (payload) => this.onSocketMessage(payload, callback) )
     
     
   }
 
   onSocketMessage(payload: any, cb: any){
     let message: Message = JSON.parse(payload.body);
-    console.log(message)
     if(message.message){
       cb(message);
     }
@@ -68,9 +67,7 @@ export class MessageService {
 
   // gets all the todos as an observable
   sendMessage(newMessage: Message) {
-    console.log('sending message: ' + newMessage.message);
-    console.log("message object:\n------", newMessage);
-    this.client.send(`${this.url}/app/chat/${this.topic}/sendMessage`, {}, JSON.stringify(newMessage));
+    this.client.send(`${this.url}/app/chat/${newMessage.chatRoom}/sendMessage`, {}, JSON.stringify(newMessage));
   }
 
 
