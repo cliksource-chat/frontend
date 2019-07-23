@@ -39,8 +39,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   constructor(private messageService: MessageService, private loginService: LoginService) {
     // sets scroll to bottom at creation
-    this.getAllChats();
-
+    this.getAllChats(); 
+    
     if(loginService.getCurrentUserType().toLowerCase() == "employer") {
       this.userIsEmployer = true;
     } 
@@ -82,15 +82,26 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           this.chatList = data;
         },
         (error: any) => console.log(error),
-        () => console.log('fetched chat list for user')
+        async () => {
+          //establish connection to all chats here
+          //force program to wait 1 second to allow sockets to finish connecttion process
+          await new Promise(resolve => setTimeout(resolve, 1000));
+         
+          this.chatList.forEach(room => this.messageService.connect(this.currentUser, room.id, this.listen(this.currentUser)))
+        }
       );
   }
 
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
-    console.log('connecting to: ',selectedChat)
     this.changeView();
-    this.messageService.connect(this.currentUser, selectedChat.id, this.listen(this.currentUser));
+    
+    
+    //connect to chat 
+    // !!!!!!!!!!!!!
+    // (move this later)
+    // !!!!!!!!!!!!!!!
+    //this.messageService.connect(this.currentUser, selectedChat.id, this.listen(this.currentUser));
     
     this.messageService.getMessages(this.currentChat.id)
     .subscribe(
@@ -116,7 +127,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     let username: string = user;
     return (message: Message) => {
       if(message.sender !== username){
-        this.messageList.push(message);
+        if(this.closed == true){
+          //add notification that message was recieved
+          // to be implemented
+        } else {
+          //chat window is open, push messages onto list of current messages
+          this.messageList.push(message);
+        }
+        
       }
     }
 

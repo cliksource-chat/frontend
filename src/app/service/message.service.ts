@@ -21,7 +21,7 @@ export class MessageService {
   constructor(private http: HttpClient) {
     this.socket = SockJS(`${this.url}/chat`);
     this.client = Stomp.over(this.socket);
-    this.client.connect({}, ()=> {console.log('connected')}, (e) => {console.log(e)});
+    this.client.connect({}, ()=> {console.log('finished web socket connection')}, (e) => {console.log(e)});
    } 
 
   connect(userId: string, chatId: string, callback: any) {
