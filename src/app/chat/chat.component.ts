@@ -88,8 +88,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   selectChat(selectedChat: ChatRoom) {
     this.currentChat = selectedChat;
+    console.log('connecting to: ',selectedChat)
     this.changeView();
-    this.messageService.connect(this.currentUser, this.listen(this.currentUser));
+    this.messageService.connect(this.currentUser, selectedChat.id, this.listen(this.currentUser));
     
     this.messageService.getMessages(this.currentChat.id)
     .subscribe(
