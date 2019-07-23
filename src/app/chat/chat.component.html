@@ -83,7 +83,10 @@
                                 <span class="chat-preview">This is the last message sent...</span>
                             </div>
                         </td>
-                        <!-- <td>{{chat.name}}</td> -->
+                        <div *ngIf="notifs[chat.id]">
+                            <td>{{notifs[chat.id]}}</td>
+                        </div>
+                      
                     </tr>
                 </tbody>
             </table>
