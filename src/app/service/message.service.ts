@@ -39,7 +39,6 @@ export class MessageService {
 
   onSocketMessage(payload: any, cb: any){
     let message: Message = JSON.parse(payload.body);
-    console.log(message)
     if(message.message){
       cb(message);
     }
@@ -69,8 +68,6 @@ export class MessageService {
 
   // gets all the todos as an observable
   sendMessage(newMessage: Message) {
-    console.log('sending message: ' + newMessage.message);
-    console.log("message object:\n------", newMessage);
     this.client.send(`${this.url}/app/chat/${newMessage.chatRoom}/sendMessage`, {}, JSON.stringify(newMessage));
   }
 
