@@ -34,7 +34,7 @@ export class ProfilesComponent implements OnInit {
             this.allUsers = [];
           else
             this.allUsers = data;
-          console.log("all users: " + this.allUsers.length);
+          
         },
         // (error: any) => console.log(error),
         () => console.log('fetched all users')
@@ -98,9 +98,8 @@ export class ProfilesComponent implements OnInit {
     // make chat popup here
     this.popupService.updatePopUpStatus(false);
     //this.popupService.updateMessageView(false);
-    console.log('from profile component: selected chat:')
-    console.log(selectedChat[0])
     this.popupService.updateCurrentChat(selectedChat[0]);
+    this.popupService.updateMessageView(false);
   }
 
 }

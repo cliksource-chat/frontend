@@ -79,6 +79,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.roomSubsciption = this.popupService.getCurrentChat()
       .subscribe(status => { 
         this.currentChat = status; 
+        this.singleMessageView = true;
         this.selectChat(status)
       } );
 
@@ -220,14 +221,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     }
 
-  }
-
-  openMessage() {
-    document.getElementById("myMessage").style.display = "block";
-  }
-  
-  closeMessage() {
-    document.getElementById("myMessage").style.display = "none";
   }
 
 }
