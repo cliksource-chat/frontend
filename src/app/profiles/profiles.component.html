@@ -1,11 +1,11 @@
 <div class="container">
     <div class="profiles-wrap">
-        <div class="profile-container" *ngFor="let user of testUsers">
+        <div class="profile-container" *ngFor="let user of allUsers">
             <div class="card" style="width: 18rem;" *ngIf="user.type == 'Candidate'">
                 <img class="card-img-top" [src]="profilePic" alt="profile picture">
                 <div class="card-body">
                     <h5 class="card-title">{{user.firstname}} {{user.lastname}}</h5>
-                    <button href="#" class="btn btn-primary">Message</button>
+                    <button (click)="messageCandidate(user)" class="btn btn-primary">Message</button>
                 </div>
             </div>
         </div>

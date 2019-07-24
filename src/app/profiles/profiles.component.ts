@@ -3,6 +3,7 @@ import { User } from '../model/user.model';
 import { ChatRoom } from '../model/chatroom.model';
 import { LoginService } from '../service/login.service';
 import { ChatroomService } from '../service/chatroom.service';
+import { ChatpopupService } from '../service/chatpopup.service';
 
 @Component({
   selector: 'app-profiles',
@@ -13,75 +14,89 @@ export class ProfilesComponent implements OnInit {
 
   profilePic = "https://elysator.com/wp-content/uploads/blank-profile-picture-973460_1280-e1523978675847.png";
 
-  testUsers: User[] = [];
-  //   { id: "1", firstname: "Harry", lastname: "Potter", type: "Employer" },
-  //   { id: "2", firstname: "James", lastname: "Potter", type: "Employer" },
-  //   { id: "3", firstname: "Tom", lastname: "Riddle", type: "Candidate" },
-  //   { id: "4", firstname: "Sirius", lastname: "Black", type: "Candidate" }
-  // ]
+  allUsers: User[] = [];
+  allChats: any[] = [];
 
-  constructor(private loginService: LoginService, private chatService: ChatroomService) { }
+  constructor(private loginService: LoginService, private chatService: ChatroomService, 
+    private popupService: ChatpopupService) { }
 
   ngOnInit() {
-    this.getCandidates();
+    this.getUsers();
+    this.getAllChatRooms();
   }
 
-  getCandidates() {
+  // get all the users in database
+  async getUsers() {
     this.loginService.getAllUsers()
-      .subscribe(
+      .toPromise().then(
         (data: User[]) => {
           if(data == null)
-            this.testUsers = [];
+            this.allUsers = [];
           else
-            this.testUsers = data;
+            this.allUsers = data;
+          console.log("all users: " + this.allUsers.length);
         },
-        (error: any) => console.log(error),
+        // (error: any) => console.log(error),
         () => console.log('fetched all users')
       );
+  }
+
+  // get all the chatrooms in database
+  async getAllChatRooms() {
+    this.chatService.getAllChatRooms()
+      .toPromise().then(
+        (data: ChatRoom[]) => {
+          if(data == null) 
+            this.allChats = [];
+          else
+            this.allChats = data;
+        },
+        // (error: any) => console.log(error),
+        () => console.log('fetched all chat rooms')
+      );
+  }
+
+  // check if candidate given doesn't have a chat with employer
+  // returns true if chat needs to be created
+  // returns false if chat already exists between them
+  canMakeNewChat(candidate: User): boolean {
+    let makeChat = true;
+    
+    for (let chat = 0; chat < this.allChats.length; chat++) {
+      if(this.allChats[chat].user1.id == this.loginService.getCurrentUserID() &&
+          this.allChats[chat].user2.id == candidate.id) 
+      {
+        makeChat = false;
+      }
+    }
+
+    // if(makeChat) {
+    //   this.candidatesContacted.push(candidate);
+    // }
+
+    return makeChat;
   }
 
   messageCandidate(candidate: User) {
     let makeChat: boolean = this.canMakeNewChat(candidate);
 
+    if(makeChat)
+      console.log("Can make chat with " + candidate.firstname + " " + candidate.lastname);
+    else
+      console.log("Cannot make chat");
+
     // will create chat if doesn't exist already between current user and candidate
-    if(makeChat) {
-      let newChat: ChatRoom = { id: "", created: new Date(), user1: this.loginService.getCurrentUser(),
-                            user2: candidate };
+    // if(makeChat) {
+    //   let newChat: ChatRoom = { id: "", created: new Date(), user1: this.loginService.getCurrentUser(),
+    //                         user2: candidate };
 
-      console.log("new chat created");
-      //this.chatService.createChatRoom(newChat);
+    //   console.log("new chat created");
+    //   //this.chatService.createChatRoom(newChat);
       
-    } else { console.log("no chat created"); }
+    // } else { console.log("no chat created"); }
 
-  }
-
-  canMakeNewChat(candidate: User): boolean {
-
-    let allChats: any;
-    // get all chats
-    this.chatService.getAllChatRooms()
-      .subscribe(
-        (data: ChatRoom[]) => {
-          if(allChats == null)
-            allChats = []
-          else
-            allChats = data;
-        },
-        (error: any) => console.log(error),
-        () => console.log('fetched user')
-      );
-    
-    let makeChat: boolean = true;
-    
-    // check if chat with these two users already exists
-    for(let chat = 0; chat < allChats.length; chat++) {
-      if( allChats[chat].user1.id == this.loginService.getCurrentUserID() &&
-          allChats[chat].user2.id == candidate.id) {
-        makeChat = false;
-      }
-    }
-
-    return makeChat;
+    // make chat popup here
+    this.popupService.updatePopUpStatus(false);
   }
 
 }

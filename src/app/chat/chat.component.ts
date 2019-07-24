@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { Message } from '../model/message.model';
 import { User } from '../model/user.model';
 import { ChatRoom } from '../model/chatroom.model';
 import { LoginService } from '../service/login.service';
+import { ChatpopupService } from '../service/chatpopup.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scroller', {static: false}) private feedContainer: ElementRef;
 
   public searchText: string;
@@ -26,7 +28,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   messageList: Message[] = null;
   
-  closed = true;
+  closed: any;
   singleMessageView = true;
 
   chatList: ChatRoom[];
@@ -38,9 +40,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   currentUser: string;
 
   userIsEmployer: boolean;
+
+  subscription: Subscription;
                       
 
-  constructor(private messageService: MessageService, private loginService: LoginService) {
+  constructor(private messageService: MessageService, private loginService: LoginService, 
+    private popupService: ChatpopupService) {
+
     // sets scroll to bottom at creation
     this.getAllChats(); 
     
@@ -53,6 +59,13 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     // scrolls chat to bottom on start
     this.scrollToBottom();
+
+    // subscribe to popup for chat
+    this.subscription = this.popupService.getPopUpStatus()
+      .subscribe(status => { this.closed = status; } );
+    // set popup to closed
+    this.popupService.updatePopUpStatus(true);
+
    }
 
   ngOnInit() {
@@ -64,7 +77,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   minimize() {
+    // if (closed) {
+    //   this.popupService.updatePopUpStatus(false);
+    // } else {
+    //   this.popupService.updatePopUpStatus(true);
+    // }
     this.closed = !this.closed;
   }
 
