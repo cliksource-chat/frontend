@@ -40,6 +40,7 @@ export class MessageService {
 
   onSocketMessage(payload: any, cb: any){
     let message: Message = JSON.parse(payload.body);
+    console.log(message);
     if(message.message){
       cb(message);
     }

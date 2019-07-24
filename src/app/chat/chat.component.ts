@@ -41,7 +41,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   userIsEmployer: boolean;
 
-  subscription: Subscription;
+  chatPopUpSubscription: Subscription;
+  viewSubsciption: Subscription;
+  roomSubsciption: Subscription;
                       
 
   constructor(private messageService: MessageService, private loginService: LoginService, 
@@ -61,12 +63,27 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.scrollToBottom();
 
     // subscribe to popup for chat
-    this.subscription = this.popupService.getPopUpStatus()
+    this.chatPopUpSubscription = this.popupService.getPopUpStatus()
       .subscribe(status => { 
-        if(closed)
-          this.getAllChats();
+        console.log('getting new chat list');
+        this.getAllChats();
+        
         this.closed = status; 
       } );
+
+      // this.viewSubsciption = this.popupService.getMessageView()
+      // .subscribe(status => { 
+      //   this.singleMessageView = status; 
+      // } );
+
+      this.roomSubsciption = this.popupService.getCurrentChat()
+      .subscribe(status => { 
+        this.currentChat = status; 
+        this.selectChat(status)
+      } );
+
+
+
     // set popup to closed
     this.popupService.updatePopUpStatus(true);
 
@@ -82,7 +99,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.chatPopUpSubscription.unsubscribe();
+    this.roomSubsciption.unsubscribe();
+    this.viewSubsciption.unsubscribe();
   }
 
   minimize() {
@@ -132,7 +151,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.changeView();
 
     //clear notifications for this channel (if any)
-    this.notifs[selectedChat.id] = 0;
+    if(this.notifs[selectedChat.id]){
+      this.notifs[selectedChat.id] = 0;
+    }
+   
     
     this.messageService.getMessages(this.currentChat.id)
     .subscribe(

@@ -21,7 +21,9 @@ export class ChatroomService {
    }
 
   createChatRoom(newChat: ChatRoom) {
-    this.client.send(`${this.url}/api/chatrooms`, {}, JSON.stringify(newChat));
+   // this.http.send(`${this.url}/api/chatrooms`, {}, JSON.stringify(newChat));
+    return this.http.post(`${this.url}/api/chatrooms`, newChat);
+    //console.log("created from service");
   }
 
   getAllChatRooms(): Observable<ChatRoom[]>{
