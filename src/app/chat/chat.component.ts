@@ -62,7 +62,11 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // subscribe to popup for chat
     this.subscription = this.popupService.getPopUpStatus()
-      .subscribe(status => { this.closed = status; } );
+      .subscribe(status => { 
+        if(closed)
+          this.getAllChats();
+        this.closed = status; 
+      } );
     // set popup to closed
     this.popupService.updatePopUpStatus(true);
 
@@ -87,6 +91,11 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     // } else {
     //   this.popupService.updatePopUpStatus(true);
     // }
+    if(closed) {
+      // refresh chats
+      this.getAllChats();
+    }
+
     this.closed = !this.closed;
   }
 

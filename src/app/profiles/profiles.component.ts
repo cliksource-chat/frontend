@@ -70,30 +70,21 @@ export class ProfilesComponent implements OnInit {
       }
     }
 
-    // if(makeChat) {
-    //   this.candidatesContacted.push(candidate);
-    // }
-
     return makeChat;
   }
 
   messageCandidate(candidate: User) {
     let makeChat: boolean = this.canMakeNewChat(candidate);
 
-    if(makeChat)
-      console.log("Can make chat with " + candidate.firstname + " " + candidate.lastname);
-    else
-      console.log("Cannot make chat");
-
     // will create chat if doesn't exist already between current user and candidate
-    // if(makeChat) {
-    //   let newChat: ChatRoom = { id: "", created: new Date(), user1: this.loginService.getCurrentUser(),
-    //                         user2: candidate };
+    if(makeChat) {
+      let newChat: ChatRoom = { id: "", created: new Date(), user1: this.loginService.getCurrentUser(),
+                            user2: candidate };
 
-    //   console.log("new chat created");
-    //   //this.chatService.createChatRoom(newChat);
+      this.chatService.createChatRoom(newChat);
+      console.log("new chat created");
       
-    // } else { console.log("no chat created"); }
+    } else { console.log("no chat created"); }
 
     // make chat popup here
     this.popupService.updatePopUpStatus(false);
