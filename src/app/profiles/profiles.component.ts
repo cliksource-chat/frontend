@@ -34,7 +34,7 @@ export class ProfilesComponent implements OnInit {
             this.allUsers = [];
           else
             this.allUsers = data;
-          console.log("all users: " + this.allUsers.length);
+          
         },
         // (error: any) => console.log(error),
         () => console.log('fetched all users')
@@ -43,7 +43,7 @@ export class ProfilesComponent implements OnInit {
 
   // get all the chatrooms in database
   async getAllChatRooms() {
-    this.chatService.getAllChatRooms()
+    await this.chatService.getAllChatRooms()
       .toPromise().then(
         (data: ChatRoom[]) => {
           if(data == null) 
@@ -73,21 +73,33 @@ export class ProfilesComponent implements OnInit {
     return makeChat;
   }
 
-  messageCandidate(candidate: User) {
+  async makeNewRoom(candidate: User){
+    let newChat: any = {user1: this.loginService.getCurrentUser(),
+    user2: candidate };
+
+    await this.chatService.createChatRoom(newChat).toPromise().then(room => console.log('created new chat') );
+    //console.log("new chat created");
+  }
+
+
+  async messageCandidate(candidate: User) {
     let makeChat: boolean = this.canMakeNewChat(candidate);
 
     // will create chat if doesn't exist already between current user and candidate
     if(makeChat) {
-      let newChat: ChatRoom = { id: "", created: new Date(), user1: this.loginService.getCurrentUser(),
-                            user2: candidate };
-
-      this.chatService.createChatRoom(newChat);
-      console.log("new chat created");
+      await this.makeNewRoom(candidate);
+      await this.getAllChatRooms();
       
     } else { console.log("no chat created"); }
 
+    console.log(this.allChats);
+    let selectedChat: ChatRoom[] = this.allChats.filter(room => room.user1.id == this.loginService.getCurrentUserID() &&
+     room.user2.id == candidate.id);
     // make chat popup here
     this.popupService.updatePopUpStatus(false);
+    //this.popupService.updateMessageView(false);
+    this.popupService.updateCurrentChat(selectedChat[0]);
+    this.popupService.updateMessageView(false);
   }
 
 }
