@@ -50,7 +50,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     private popupService: ChatpopupService) {
 
     // sets scroll to bottom at creation
-    this.getAllChats(); 
+    //this.getAllChats(); 
     
     if(loginService.getCurrentUserType().toLowerCase() == "employer") {
       this.userIsEmployer = true;

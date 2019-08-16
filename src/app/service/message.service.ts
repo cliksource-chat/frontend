@@ -17,7 +17,7 @@ export class MessageService {
   socket: object = null;
   client: any = null;
 
-  subscription: any = {};
+  subscription: any = [];
   
   constructor(private http: HttpClient) {
     this.socket = SockJS(`${this.url}/chat`);
@@ -32,10 +32,8 @@ export class MessageService {
       {},
       JSON.stringify({sender: userId, type: 'JOIN'})
     );
-
-    this.subscription = this.client.subscribe(`/channel/${chatId}`, (payload) => this.onSocketMessage(payload, callback) )
     
-    
+    this.subscription.push(this.client.subscribe(`/channel/${chatId}`, (payload) => this.onSocketMessage(payload, callback) ))
   }
 
   onSocketMessage(payload: any, cb: any){
@@ -44,8 +42,6 @@ export class MessageService {
     if(message.message){
       cb(message);
     }
-    
-   
   }
 
   // gets the chats of the user by their id

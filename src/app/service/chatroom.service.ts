@@ -15,14 +15,11 @@ export class ChatroomService {
   client: any = null;
 
   constructor(private http: HttpClient) {
-    this.socket = SockJS(`${this.url}/chat`);
-    this.client = Stomp.over(this.socket);
-    this.client.connect({}, ()=> {console.log('connected')}, (e) => {console.log(e)});
    }
 
   createChatRoom(newChat: ChatRoom) {
-   // this.http.send(`${this.url}/api/chatrooms`, {}, JSON.stringify(newChat));
-    return this.http.post(`${this.url}/api/chatrooms`, newChat);
+    //this.http.send(`${this.url}/api/chatrooms`, {}, JSON.stringify(newChat));
+    return this.http.post(`${this.url}/api/chatrooms`, newChat, {responseType: 'text'});
     //console.log("created from service");
   }
 
