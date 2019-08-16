@@ -50,7 +50,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
     private popupService: ChatpopupService) {
 
     // sets scroll to bottom at creation
-    this.getAllChats(); 
+    //this.getAllChats(); 
     
     if(loginService.getCurrentUserType().toLowerCase() == "employer") {
       this.userIsEmployer = true;
@@ -142,7 +142,10 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
           //force program to wait 1 second to allow sockets to finish connection process
           await new Promise(resolve => setTimeout(resolve, 1000));
          
-          this.chatList.forEach(room => this.messageService.connect(this.currentUser, room.id, this.listen(this.currentUser)))
+          this.chatList.forEach((room, i) =>{ 
+            console.log("iteration ",i);
+            this.messageService.connect(this.currentUser, room.id, this.listen(this.currentUser))
+          })
         }
       );
   }

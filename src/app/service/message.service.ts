@@ -32,7 +32,7 @@ export class MessageService {
       {},
       JSON.stringify({sender: userId, type: 'JOIN'})
     );
-
+    console.log('!!!!!!\n\nsubscribing to chat: '+chatId+"\n\n!!!!!!");
     this.subscription = this.client.subscribe(`/channel/${chatId}`, (payload) => this.onSocketMessage(payload, callback) )
     
     
