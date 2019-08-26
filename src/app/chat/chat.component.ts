@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   closed: any;
   singleMessageView = true;
 
-  chatList: ChatRoom[];
+  chatList: ChatRoom[] = [];
 
   notifs:any = {};
 
